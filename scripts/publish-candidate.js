@@ -27,7 +27,10 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
-/** Everything the candidate needs to run the application, and nothing else. */
+/**
+ * Everything the candidate needs, and nothing else. An entry is either a name
+ * copied as-is, or { from, to } when the path differs in the snapshot.
+ */
 const PUBLISH = [
   'src',
   'public',
@@ -39,21 +42,37 @@ const PUBLISH = [
   '.env.example',
   '.gitignore',
   'README.md',
+  // The three tickets ship with the clone, at the root, so the candidate reads
+  // them in order without anything being copied by hand.
+  { from: join('interview', 'tickets'), to: 'tickets' },
 ];
 
 /** Known to stay behind. Anything outside both lists is reported, not guessed. */
 const KEEP_BACK = ['interview', 'scripts', 'node_modules', '.git', '.claude', '.env', 'data'];
 
+/** Where the published tickets live in the snapshot. */
+const TICKETS = 'tickets';
+
 /**
- * Last line of defence. If any of these ever reaches the snapshot, something
- * from the interview material has been copied into the application by mistake.
+ * Last line of defence, in two layers.
+ *
+ * ALWAYS applies to every published file: the correction grid must never
+ * travel, wherever it is quoted from.
+ *
+ * APP_ONLY applies to everything except the tickets. The tickets legitimately
+ * carry the figure Finance reported and are named after the exercise — that is
+ * the point of them. The same strings inside the application would mean the
+ * interview material has bled into the code, which is what this catches.
  */
-const LEAKS = [
-  { pattern: /interview\//i, what: 'a path inside interview/' },
+const ALWAYS = [
   { pattern: /grille[- ]de[- ]correction/i, what: 'the correction grid' },
+  { pattern: /answer key|corrig[ée]/i, what: 'an answer key' },
+  { pattern: /interview\/(?!tickets)/i, what: 'a path inside interview/' },
+];
+
+const APP_ONLY = [
   { pattern: /\d-(FEATURE|BUGFIX)-/, what: 'a ticket filename' },
   { pattern: /1[\s,.]?846[\s,.]?800/, what: 'the expected total of ticket 2' },
-  { pattern: /answer key|corrig[ée]/i, what: 'an answer key' },
 ];
 
 // ------------------------------------------------------------------- args
@@ -93,8 +112,13 @@ function walk(dir) {
   return found;
 }
 
+const sourceOf = (entry) => (typeof entry === 'string' ? entry : entry.from);
+const targetOf = (entry) => (typeof entry === 'string' ? entry : entry.to);
+
 function reportUnknownEntries() {
-  const known = new Set([...PUBLISH, ...KEEP_BACK]);
+  // Compared on top-level names: an entry reaching into a subdirectory, such
+  // as interview/tickets, leaves its parent in KEEP_BACK.
+  const known = new Set([...PUBLISH.map((e) => sourceOf(e).split(sep)[0]), ...KEEP_BACK]);
   const unknown = readdirSync(root).filter((entry) => !known.has(entry));
 
   if (unknown.length > 0) {
@@ -117,9 +141,13 @@ function scanForLeaks(snapshot) {
       continue; // binary, not our problem
     }
 
-    for (const { pattern, what } of LEAKS) {
+    const where = relative(snapshot, file);
+    const isTicket = where.split(sep)[0] === TICKETS;
+    const patterns = isTicket ? ALWAYS : [...ALWAYS, ...APP_ONLY];
+
+    for (const { pattern, what } of patterns) {
       if (pattern.test(content)) {
-        offenders.push(`${relative(snapshot, file)} — ${what}`);
+        offenders.push(`${where} — ${what}`);
       }
     }
   }
@@ -151,13 +179,13 @@ const snapshot = mkdtempSync(join(tmpdir(), 'lysa-candidate-'));
 let published = false;
 
 try {
-  const missing = PUBLISH.filter((entry) => !existsSync(join(root, entry)));
+  const missing = PUBLISH.map(sourceOf).filter((from) => !existsSync(join(root, from)));
   if (missing.length) {
     throw new Error(`missing from the repository: ${missing.join(', ')}`);
   }
 
   for (const entry of PUBLISH) {
-    cpSync(join(root, entry), join(snapshot, entry), { recursive: true });
+    cpSync(join(root, sourceOf(entry)), join(snapshot, targetOf(entry)), { recursive: true });
   }
 
   const files = walk(snapshot);
@@ -167,7 +195,11 @@ try {
   console.log(`  Target     ${remote}`);
   console.log(`  Branch     main, single commit, force-pushed`);
   console.log('\n  Published:');
-  PUBLISH.forEach((entry) => console.log(`    ${entry}`));
+  PUBLISH.forEach((entry) =>
+    console.log(
+      typeof entry === 'string' ? `    ${entry}` : `    ${entry.to}  (from ${entry.from})`
+    )
+  );
 
   reportUnknownEntries();
 

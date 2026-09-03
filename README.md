@@ -32,6 +32,19 @@ DATABASE_URL=postgres://user:pass@localhost:5432/mydb npm start
 
 Copy `.env.example` to `.env` to make that permanent.
 
+## Your tasks
+
+They are in [`tickets/`](tickets/), numbered in the order to work through them:
+
+```
+1-FEATURE-archive-inactive-customers.md
+2-BUGFIX-invoice-total.md
+3-FEATURE-export-orders-csv.md
+```
+
+Take them one at a time, and wait until your interviewer tells you to open the
+next one.
+
 ## What the application does
 
 **Customers** — a searchable grid, a form to create, update and delete a

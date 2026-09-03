@@ -72,24 +72,28 @@ Ouvre VS Code sur le dossier, vérifie que Claude Code répond, laisse
 l'application tournée sur une fenêtre et le navigateur ouvert. Coupe le
 partage d'écran de tes propres notes.
 
-Les tickets sont numérotés dans l'ordre où il doit les traiter :
+Les trois tickets sont **déjà dans le clone**, sous `tickets/`, numérotés dans
+l'ordre où il doit les traiter :
 
 ```
-1-FEATURE-archive-inactive-customers.md
-2-BUGFIX-invoice-total.md
-3-FEATURE-export-orders-csv.md
+tickets/1-FEATURE-archive-inactive-customers.md
+tickets/2-BUGFIX-invoice-total.md
+tickets/3-FEATURE-export-orders-csv.md
 ```
 
-Copie **uniquement le dossier `tickets/`** sur son poste, jamais `interview/`
-en entier — la grille de correction est dans le dossier parent.
+Rien à copier. Le README du repo candidat les pointe et lui demande de ne pas
+ouvrir le suivant avant que tu ne le dises — redis-le à l'oral, le time-box n'a
+de sens que s'il ne sait pas encore ce qui vient après.
 
-```bash
-cp -r interview/tickets ~/Desktop/lysa-tickets
-```
-
-Il voit donc les trois d'emblée. Rappelle-lui à l'oral de les prendre dans
-l'ordre et de ne pas ouvrir le suivant avant que tu ne le dises : le time-box
-n'a de sens que s'il ne sait pas encore ce qui vient après.
+**Ce que ça change pendant la séance.** Les tickets étant dans le dépôt, Claude
+Code peut lire le ticket 2 pendant qu'il travaille sur le 1 ou le 3, et
+corriger le bug de facturation de lui-même, sans que le candidat l'ait demandé.
+Ça ne coûte rien sur le ticket 1, mais sur le **ticket 3** ça brouille la
+lecture : l'export CSV doit réutiliser `orderTotal`, et si le calcul a déjà été
+réécrit entre-temps tu ne sais plus si le candidat a réutilisé la bonne
+fonction. Deux réflexes : regarde `git diff src/pricing.js` avant de lancer le
+ticket 3, et si le fichier a bougé sans qu'il te l'ait dit, demande-lui ce
+qu'il a changé là et pourquoi. La réponse est instructive dans les deux sens.
 
 ## Déroulé, environ 2 heures
 
