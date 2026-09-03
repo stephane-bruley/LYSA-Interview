@@ -1,4 +1,4 @@
-# OPS-214 — Archive inactive customers
+# 1 · Feature — Archive inactive customers
 
 **Reporter:** Operations · **Priority:** medium
 

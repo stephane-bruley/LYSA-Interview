@@ -15,7 +15,7 @@ Trois signaux transversaux, à observer sur les trois tickets :
 
 ---
 
-## A — OPS-214 · Archiver les clients inactifs
+## 1 · Feature — Archiver les clients inactifs
 
 **Ce qui est piégé :** le mot **inactif** n'est défini nulle part. Ni dans le
 ticket, ni dans le schéma, ni dans le code. Il n'existe aucune colonne, aucune
@@ -44,7 +44,7 @@ réponse. Demande-lui ce qui se passe si le client n° 3 sur 10 échoue.
 
 ---
 
-## B — SUP-892 · Total faux sur SO-1043
+## 2 · Bugfix — Total faux sur SO-1043
 
 **La cause :** dans `src/pricing.js`, la TVA est calculée sur `afterVolume`,
 c'est-à-dire **avant** la remise contractuelle, alors que la règle 3 écrite en
@@ -87,7 +87,7 @@ contractuel à 0.
 
 ---
 
-## C — OPS-231 · Export CSV
+## 3 · Feature — Export CSV
 
 **Ce qui est piégé :** le client **`Nguyen Trading, Ltd`** contient une virgule.
 Une implémentation naïve qui fait `values.join(',')` produit un CSV décalé d'une
@@ -104,7 +104,7 @@ caractères vietnamiens s'affichent.
 | **Excellent** | Échappe correctement, teste avec un nom contenant une virgule, réutilise `orderTotal` au lieu de recalculer, et ouvre le fichier pour vérifier. |
 | **Bon** | Échappe correctement, mais son test n'utilise qu'un nom simple. |
 | **Faible** | `join(',')`, test qui passe, bug invisible. Le fichier est cassé pour 3 commandes sur 14. |
-| **Rejet** | Recalcule le total dans l'export au lieu d'appeler `orderTotal` — deux sources de vérité pour le même chiffre, et le bug de B devient invisible sur l'export. |
+| **Rejet** | Recalcule le total dans l'export au lieu d'appeler `orderTotal` — deux sources de vérité pour le même chiffre, et le bug du ticket 2 devient invisible sur l'export. |
 
 **À demander :** *« exporte-moi Nguyen Trading, Ltd et ouvre le fichier. »*
 

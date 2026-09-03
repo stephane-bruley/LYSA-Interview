@@ -10,7 +10,7 @@ seule, poussé en **un unique commit**.
 
 Ce commit unique n'est pas une commodité, c'est une condition de
 fonctionnement : avec un historique réel, `git log -p src/pricing.js` livre la
-réponse de SUP-892 en dix secondes.
+réponse du ticket 2 en dix secondes.
 
 Le repo distant est déjà créé, et il est **public** — le candidat travaille sur
 le laptop du recruteur, il n'a donc aucun accès à demander ni à révoquer. Le
@@ -26,7 +26,7 @@ npm run publish-candidate                # demande PUBLISH avant d'écraser
 Le script publie une liste blanche explicite (`src`, `public`, `db`, `test`,
 et les fichiers de configuration) et refuse de pousser s'il trouve la moindre
 trace du matériel d'entretien dans l'instantané — référence de ticket, mention
-de la grille, ou le montant attendu de SUP-892. Tout fichier ajouté à la racine
+de la grille, ou le montant attendu du ticket 2. Tout fichier ajouté à la racine
 du repo reste exclu jusqu'à ce qu'on l'inscrive délibérément dans la liste.
 
 Cible différente : `npm run publish-candidate -- --remote=<url>`, ou la variable
@@ -34,13 +34,13 @@ Cible différente : `npm run publish-candidate -- --remote=<url>`, ou la variabl
 
 **Suppose que l'exercice est déjà connu.** Le repo étant public, il est
 indexable : un candidat qui cherche le nom de l'entreprise peut tomber sur
-`src/pricing.js` et préparer SUP-892 à l'avance. C'est pour ça qu'il y a trois
-scénarios sur trois terrains différents, et qu'il en faudra un quatrième — plus
-tôt que dans six mois.
+`src/pricing.js` et préparer le ticket 2 à l'avance. C'est pour ça qu'il y a
+trois scénarios sur trois terrains différents, et qu'il en faudra un quatrième
+— plus tôt que dans six mois.
 
-Le signal reste largement intact même préparé : le ticket A ne se prépare pas
-(on observe s'il pose la question), et pour B comme pour C ce qu'on regarde est
-la méthode et les prompts, pas la trouvaille. Mais si un candidat arrive en
+Le signal reste largement intact même préparé : le ticket 1 ne se prépare pas
+(on observe s'il pose la question), et pour les tickets 2 et 3 ce qu'on regarde
+est la méthode et les prompts, pas la trouvaille. Mais si un candidat arrive en
 sachant exactement où est le bug sans jamais avoir lancé l'application, tu le
 verras — demande-lui de reproduire devant toi.
 
@@ -72,29 +72,46 @@ Ouvre VS Code sur le dossier, vérifie que Claude Code répond, laisse
 l'application tournée sur une fenêtre et le navigateur ouvert. Coupe le
 partage d'écran de tes propres notes.
 
-Les tickets se donnent **un par un**, sur papier ou dans un fichier à part —
-jamais les trois d'un coup, sinon il optimise son temps au lieu de traiter le
-problème qu'il a devant lui.
+Les tickets sont numérotés dans l'ordre où il doit les traiter :
+
+```
+1-FEATURE-archive-inactive-customers.md
+2-BUGFIX-invoice_total.md
+3-FEATURE-export-ordres-csv.md
+```
+
+Copie **uniquement le dossier `tickets/`** sur son poste, jamais `interview/`
+en entier — la grille de correction est dans le dossier parent.
+
+```bash
+cp -r interview/tickets ~/Desktop/lysa-tickets
+```
+
+Il voit donc les trois d'emblée. Rappelle-lui à l'oral de les prendre dans
+l'ordre et de ne pas ouvrir le suivant avant que tu ne le dises : le time-box
+n'a de sens que s'il ne sait pas encore ce qui vient après.
 
 ## Déroulé, environ 2 heures
 
 | | Durée | |
 | --- | --- | --- |
 | Prise en main | 10 min | Il lance l'app, ouvre le code, se repère. Laisse-le explorer seul. |
-| **A** · OPS-214 | 15 min | Le signal tombe dans les 5 premières minutes. |
-| **B** · SUP-892 | 40 min | Le plus long. Coupe à 40 min quoi qu'il arrive. |
-| **C** · OPS-231 | 45 min | Celui qui teste le mieux le réflexe de test. |
+| **1** · Feature archivage | 15 min | Le signal tombe dans les 5 premières minutes. |
+| **2** · Bugfix facturation | 40 min | Le plus long. Coupe à 40 min quoi qu'il arrive. |
+| **3** · Feature export CSV | 45 min | Celui qui teste le mieux le réflexe de test. |
 | Relecture | 20 min | Son diff, ses doutes. C'est là que tu notes. |
 
-Si tu n'as qu'1 h 15 : **B seul + relecture**. C'est celui qui couvre le plus.
-Si tu veux couper : A tient en 10 minutes et peut se fondre en ouverture de C.
+Si tu n'as qu'1 h 15 : **le ticket 2 seul + relecture**. C'est celui qui couvre
+le plus.
+Si tu veux couper : le ticket 1 tient en 10 minutes et peut se fondre en
+ouverture du ticket 3.
 
 ## Les trois règles pendant la séance
 
 **Time-box sans négocier.** Avec Claude Code, l'écart entre un bon candidat et
 un faible ne se voit pas sur « fini / pas fini », il se voit sur la première
-demi-heure. Un candidat qui n'a pas reproduit le bug de B en 20 minutes t'a
-déjà tout dit. Coupe et passe à la suite.
+demi-heure. Un candidat qui n'a pas reproduit le bug du ticket 2 en 20 minutes
+t'a déjà tout dit. Coupe et passe à la suite.
 
 **Ne dis jamais combien il y a de problèmes.** Sinon il compte au lieu de lire.
 

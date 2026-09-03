@@ -9,7 +9,8 @@
  * commit, force-overwriting the candidate repository. That is deliberate:
  *
  *   - `git log -p src/pricing.js` in a real history would hand the candidate
- *     the answer to SUP-892 in ten seconds. One commit, nothing to read.
+ *     the answer to the bugfix ticket in ten seconds. One commit, nothing to
+ *     read.
  *   - Nothing depends on the candidate repository's history, so rewriting it
  *     costs nothing and cannot be half-done.
  *
@@ -50,8 +51,8 @@ const KEEP_BACK = ['interview', 'scripts', 'node_modules', '.git', '.claude', '.
 const LEAKS = [
   { pattern: /interview\//i, what: 'a path inside interview/' },
   { pattern: /grille[- ]de[- ]correction/i, what: 'the correction grid' },
-  { pattern: /\b(SUP-892|OPS-214|OPS-231)\b/, what: 'a ticket reference' },
-  { pattern: /1[\s,.]?846[\s,.]?800/, what: 'the expected total of SUP-892' },
+  { pattern: /\d-(FEATURE|BUGFIX)-/, what: 'a ticket filename' },
+  { pattern: /1[\s,.]?846[\s,.]?800/, what: 'the expected total of ticket 2' },
   { pattern: /answer key|corrig[ée]/i, what: 'an answer key' },
 ];
 

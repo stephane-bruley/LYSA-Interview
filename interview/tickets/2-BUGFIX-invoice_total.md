@@ -1,4 +1,4 @@
-# SUP-892 — Wrong total on order SO-1043
+# 2 · Bugfix — Wrong total on order SO-1043
 
 **Reporter:** Finance, through support · **Priority:** high
 

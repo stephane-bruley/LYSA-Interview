@@ -1,4 +1,4 @@
-# OPS-231 — Export a customer's orders as CSV
+# 3 · Feature — Export a customer's orders as CSV
 
 **Reporter:** Operations · **Priority:** medium
 
