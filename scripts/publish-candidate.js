@@ -48,7 +48,17 @@ const PUBLISH = [
 ];
 
 /** Known to stay behind. Anything outside both lists is reported, not guessed. */
-const KEEP_BACK = ['interview', 'scripts', 'node_modules', '.git', '.claude', '.env', 'data'];
+const KEEP_BACK = [
+  'interview',
+  'scripts',
+  'node_modules',
+  '.git',
+  '.claude',
+  '.env',
+  'data',
+  // Spells out every planted defect and every trap. Never publish it.
+  'CLAUDE.md',
+];
 
 /**
  * Last line of defence, in two layers.
