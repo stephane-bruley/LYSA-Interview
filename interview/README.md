@@ -76,8 +76,8 @@ Les tickets sont numérotés dans l'ordre où il doit les traiter :
 
 ```
 1-FEATURE-archive-inactive-customers.md
-2-BUGFIX-invoice_total.md
-3-FEATURE-export-ordres-csv.md
+2-BUGFIX-invoice-total.md
+3-FEATURE-export-orders-csv.md
 ```
 
 Copie **uniquement le dossier `tickets/`** sur son poste, jamais `interview/`
