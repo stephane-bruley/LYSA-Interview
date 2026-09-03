@@ -9,22 +9,35 @@ agreed with Finance.
 
 ## Getting started
 
-You need Node 22 or later and Docker.
+You need Node 22 or later, and Docker running.
 
 ```bash
 npm install
-npm run db:up      # starts PostgreSQL in a container, on port 5433
-npm run db:reset   # creates the schema and loads the demo data
+npm run db:init    # once: starts PostgreSQL, creates the schema, loads demo data
 npm start          # http://localhost:4000
 ```
 
+`npm start` brings up the PostgreSQL container and runs the server in the
+foreground. **Ctrl-C stops the server and the container**, leaving nothing
+behind. Your data survives in a Docker volume, so the next start is instant.
+
+It will not create the schema for you: on an empty database it stops and tells
+you to run `npm run db:reset`. A start command that quietly writes to your
+database is one you cannot trust.
+
 ```bash
-npm test           # unit tests + API tests (the database must be running)
-npm run dev        # same as start, restarts on file change
+npm test           # unit tests + API tests (needs the database, with the schema)
+npm run dev        # server only, restarts on file change
+npm run db:reset   # back to the demo data, dropping anything you changed
+npm run db:up      # the container alone, in the background
+npm run db:down    # stop it
 ```
 
-If you already run PostgreSQL yourself, skip `db:up` and point the application
-at your own database:
+`npm run dev` deliberately leaves Docker alone, so watching files does not
+cycle the container on every keystroke — run `npm run db:up` once first.
+
+If you already run PostgreSQL yourself, point the application at it and Docker
+is left out of it entirely:
 
 ```bash
 DATABASE_URL=postgres://user:pass@localhost:5432/mydb npm start
@@ -65,7 +78,8 @@ lines and the breakdown of the calculation.
 
 ```
 src/
-  server.js        starts the HTTP server
+  start.js         npm start: container, schema, server, Ctrl-C teardown
+  server.js        the HTTP server on its own
   app.js           builds the Express application
   db.js            the PostgreSQL pool
   pricing.js       the pricing rules

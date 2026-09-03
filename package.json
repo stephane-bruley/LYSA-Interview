@@ -8,10 +8,11 @@
     "node": ">=22"
   },
   "scripts": {
-    "start": "node --env-file-if-exists=.env src/server.js",
+    "start": "node --env-file-if-exists=.env src/start.js",
     "dev": "node --env-file-if-exists=.env --watch src/server.js",
-    "db:up": "docker compose up -d",
+    "db:up": "docker compose up -d --wait",
     "db:down": "docker compose down",
+    "db:init": "npm run db:up && npm run db:reset",
     "db:reset": "node --env-file-if-exists=.env db/reset.js",
     "test": "node --env-file-if-exists=.env --test",
     "publish-candidate": "node scripts/publish-candidate.js"

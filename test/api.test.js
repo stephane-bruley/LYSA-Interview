@@ -1,17 +1,25 @@
 /**
- * These tests hit the real database. Start it first:
- *   npm run db:up && npm run db:reset
+ * These tests hit the real database, and they expect the demo data. The
+ * simplest way to have both is to leave `npm start` running in another
+ * terminal.
  */
 import test, { after, before } from 'node:test';
 import assert from 'node:assert/strict';
 
 import { createApp } from '../src/app.js';
 import { pool } from '../src/db.js';
+import { isEmpty } from '../db/reset.js';
 
 let base;
 let server;
 
 before(async () => {
+  // Without this, a fresh clone fails every test below with an opaque
+  // "relation does not exist", which says nothing about what to do next.
+  if (await isEmpty()) {
+    throw new Error('the database is empty — run `npm run db:reset` first');
+  }
+
   server = createApp().listen(0);
   await new Promise((resolve) => server.once('listening', resolve));
   base = `http://localhost:${server.address().port}`;

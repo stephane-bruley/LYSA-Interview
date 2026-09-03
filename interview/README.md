@@ -58,11 +58,20 @@ Clone the **candidate repository**, never this one:
 git clone https://github.com/stephane-bruley/LYSA-Interview-Candidat.git lysa-orders
 cd lysa-orders
 npm install
-npm run db:up
-npm run db:reset
-npm test          # 12 tests, all green
+npm run db:init   # container, schema, demo data — once
 npm start         # http://localhost:4000
 ```
+
+`npm start` brings up the container and holds the terminal; Ctrl-C stops both
+the server and the container. Leave it running. In a second terminal:
+
+```bash
+npm test          # 12 tests, all green
+```
+
+On an empty database `npm start` refuses and points at `npm run db:reset`,
+which is why `db:init` comes first. Nothing writes to the database behind your
+back.
 
 Remove the remote, so they can neither push to you nor trace their way back to
 the original:
@@ -145,7 +154,12 @@ that settle it: [grading-grid.md](grading-grid.md).
 
 ## Resetting between two candidates
 
+With `npm start` stopped:
+
 ```bash
-npm run db:reset
-git checkout . && git clean -fd
+git checkout . && git clean -fd   # their code, gone
+npm run db:reset                  # their data, gone — needs the container up
 ```
+
+`db:reset` needs the database running, so either leave `npm start` up in
+another terminal, or `npm run db:up` first and `npm run db:down` after.
