@@ -55,12 +55,15 @@ const KEEP_BACK = ['interview', 'scripts', 'node_modules', '.git', '.claude', '.
  *
  * ALWAYS applies to every published file. Now that the tickets ship with the
  * clone, their filenames and the figure Finance reported are not secrets any
- * more — the only thing that must never travel is the correction grid.
+ * more — the only thing that must never travel is the grading grid.
  */
 const ALWAYS = [
-  { pattern: /grille[- ]de[- ]correction/i, what: 'the correction grid' },
-  { pattern: /answer key|corrig[ée]/i, what: 'an answer key' },
+  { pattern: /grading[- ]grid/i, what: 'the grading grid' },
+  { pattern: /answer key/i, what: 'an answer key' },
   { pattern: /interview\/(?!tickets)/i, what: 'a path inside interview/' },
+  // The grid was called grille-de-correction until the internal material was
+  // translated. Kept so an old copy restored from anywhere still gets caught.
+  { pattern: /grille[- ]de[- ]correction/i, what: 'the grading grid, old name' },
 ];
 
 /**

@@ -1,55 +1,58 @@
-# Préparer et mener l'entretien
+# Preparing and running the interview
 
-> Dossier interne. **Il ne doit pas se trouver sur le laptop du candidat.**
+> Internal directory. **It must not end up on the candidate's laptop.**
 
-## Publier le repo candidat
+## Publishing the candidate repository
 
-Le candidat ne clone jamais ce repo-ci. Il clone
-`LYSA-Interview-Candidat`, qui est un **instantané régénéré** de l'application
-seule, poussé en **un unique commit**.
+The candidate never clones this repository. They clone
+`LYSA-Interview-Candidat`, which is a **regenerated snapshot** of the
+application alone, pushed as **a single commit**.
 
-Ce commit unique n'est pas une commodité, c'est une condition de
-fonctionnement : avec un historique réel, `git log -p src/pricing.js` livre la
-réponse du ticket 2 en dix secondes.
+That single commit is not a convenience, it is a condition for the exercise to
+work: with a real history, `git log -p src/pricing.js` hands over the answer to
+ticket 2 in ten seconds.
 
-Le repo distant est déjà créé, et il est **public** — le candidat travaille sur
-le laptop du recruteur, il n'a donc aucun accès à demander ni à révoquer. Le
-repo public sert au ré-approvisionnement du laptop, pas au candidat.
+The remote repository already exists, and it is **public** — the candidate
+works on the recruiter's laptop, so there is no access to grant and none to
+revoke. The public repository is there to re-provision the laptop, not for the
+candidate.
 
-À chaque fois que l'application change :
+Every time the application changes:
 
 ```bash
-npm run publish-candidate -- --dry-run   # ce qui partirait, sans rien pousser
-npm run publish-candidate                # demande PUBLISH avant d'écraser
+npm run publish-candidate -- --dry-run   # what would go out, pushing nothing
+npm run publish-candidate                # asks for PUBLISH before overwriting
 ```
 
-Le script publie une liste blanche explicite (`src`, `public`, `db`, `test`,
-et les fichiers de configuration) et refuse de pousser s'il trouve la moindre
-trace du matériel d'entretien dans l'instantané — référence de ticket, mention
-de la grille, ou le montant attendu du ticket 2. Tout fichier ajouté à la racine
-du repo reste exclu jusqu'à ce qu'on l'inscrive délibérément dans la liste.
+The script publishes an explicit allow-list (`src`, `public`, `db`, `test`, the
+tickets and the configuration files) and refuses to push if it finds any trace
+of the internal material in the snapshot — a mention of the grading grid, or
+the total Finance expects appearing inside `src/` or `test/`. Any file added at
+the root of the repository stays excluded until someone deliberately adds it to
+the list.
 
-Cible différente : `npm run publish-candidate -- --remote=<url>`, ou la variable
-`CANDIDATE_REPO`.
+A different target: `npm run publish-candidate -- --remote=<url>`, or the
+`CANDIDATE_REPO` variable.
 
-**Suppose que l'exercice est déjà connu.** Le repo étant public, il est
-indexable : un candidat qui cherche le nom de l'entreprise peut tomber sur
-`src/pricing.js` et préparer le ticket 2 à l'avance. C'est pour ça qu'il y a
-trois scénarios sur trois terrains différents, et qu'il en faudra un quatrième
-— plus tôt que dans six mois.
+**Assume the exercise is already known.** The repository being public, it is
+indexable: a candidate searching for the company name can land on
+`src/pricing.js` and prepare ticket 2 in advance. That is why there are three
+scenarios on three different grounds, and why a fourth will be needed — sooner
+than in six months.
 
-Le signal reste largement intact même préparé : le ticket 1 ne se prépare pas
-(on observe s'il pose la question), et pour les tickets 2 et 3 ce qu'on regarde
-est la méthode et les prompts, pas la trouvaille. Mais si un candidat arrive en
-sachant exactement où est le bug sans jamais avoir lancé l'application, tu le
-verras — demande-lui de reproduire devant toi.
+The signal survives preparation largely intact: ticket 1 cannot be prepared
+(what we observe is whether they ask the question), and on tickets 2 and 3 what
+we look at is the method and the prompts, not the discovery. But if a candidate
+arrives knowing exactly where the bug is without ever having started the
+application, you will see it — ask them to reproduce it in front of you.
 
-## Préparer le laptop, la veille
+## Preparing the laptop, the day before
 
-Quinze minutes d'installation ratée le jour J ne t'apprennent rien sur le
-candidat et bouffent ton créneau. Tout doit déjà tourner quand il s'assoit.
+Fifteen minutes of failed setup on the day teaches you nothing about the
+candidate and eats your slot. Everything must already be running when they sit
+down.
 
-Clone le **repo candidat**, jamais celui-ci :
+Clone the **candidate repository**, never this one:
 
 ```bash
 git clone https://github.com/stephane-bruley/LYSA-Interview-Candidat.git lysa-orders
@@ -57,23 +60,23 @@ cd lysa-orders
 npm install
 npm run db:up
 npm run db:reset
-npm test          # 12 tests, tous verts
+npm test          # 12 tests, all green
 npm start         # http://localhost:4000
 ```
 
-Retire le remote, pour qu'il ne puisse ni pousser chez toi ni remonter à
-l'original :
+Remove the remote, so they can neither push to you nor trace their way back to
+the original:
 
 ```bash
 git remote remove origin
 ```
 
-Ouvre VS Code sur le dossier, vérifie que Claude Code répond, laisse
-l'application tournée sur une fenêtre et le navigateur ouvert. Coupe le
-partage d'écran de tes propres notes.
+Open VS Code on the directory, check that Claude Code answers, leave the
+application running in one window with the browser open. Turn off screen
+sharing of your own notes.
 
-Les trois tickets sont **déjà dans le clone**, sous `tickets/`, numérotés dans
-l'ordre où il doit les traiter :
+The three tickets are **already in the clone**, under `tickets/`, numbered in
+the order they should work through them:
 
 ```
 tickets/1-FEATURE-archive-inactive-customers.md
@@ -81,66 +84,66 @@ tickets/2-BUGFIX-invoice-total.md
 tickets/3-FEATURE-export-orders-csv.md
 ```
 
-Rien à copier. Le README du repo candidat les pointe et lui demande de ne pas
-ouvrir le suivant avant que tu ne le dises — redis-le à l'oral, le time-box n'a
-de sens que s'il ne sait pas encore ce qui vient après.
+Nothing to copy. The candidate repository's README points at them and asks them
+not to open the next one until you say so — say it out loud as well, the
+time-box only means something while they do not yet know what is coming.
 
-**Ce que ça change pendant la séance.** Les tickets étant dans le dépôt, Claude
-Code peut lire le ticket 2 pendant qu'il travaille sur le 1 ou le 3, et
-corriger le bug de facturation de lui-même, sans que le candidat l'ait demandé.
-Ça ne coûte rien sur le ticket 1, mais sur le **ticket 3** ça brouille la
-lecture : l'export CSV doit réutiliser `orderTotal`, et si le calcul a déjà été
-réécrit entre-temps tu ne sais plus si le candidat a réutilisé la bonne
-fonction. Deux réflexes : regarde `git diff src/pricing.js` avant de lancer le
-ticket 3, et si le fichier a bougé sans qu'il te l'ait dit, demande-lui ce
-qu'il a changé là et pourquoi. La réponse est instructive dans les deux sens.
+**What this changes during the session.** With the tickets in the repository,
+Claude Code can read ticket 2 while they work on 1 or 3 and fix the invoicing
+bug on its own, without the candidate having asked. That costs nothing on
+ticket 1, but on **ticket 3** it muddies the reading: the CSV export is
+supposed to reuse `orderTotal`, and if the calculation has already been
+rewritten by then you can no longer tell whether the candidate reused the right
+function. Two habits: look at `git diff src/pricing.js` before starting ticket
+3, and if the file has moved without them telling you, ask what they changed
+there and why. The answer is informative either way.
 
-## Déroulé, environ 2 heures
+## Running order, about 2 hours
 
-| | Durée | |
+| | Time | |
 | --- | --- | --- |
-| Prise en main | 10 min | Il lance l'app, ouvre le code, se repère. Laisse-le explorer seul. |
-| **1** · Feature archivage | 15 min | Le signal tombe dans les 5 premières minutes. |
-| **2** · Bugfix facturation | 40 min | Le plus long. Coupe à 40 min quoi qu'il arrive. |
-| **3** · Feature export CSV | 45 min | Celui qui teste le mieux le réflexe de test. |
-| Relecture | 20 min | Son diff, ses doutes. C'est là que tu notes. |
+| Getting oriented | 10 min | They start the app, open the code, find their way. Let them explore alone. |
+| **1** · Archiving feature | 15 min | The signal lands in the first five minutes. |
+| **2** · Invoicing bugfix | 40 min | The longest. Cut it at 40 minutes whatever happens. |
+| **3** · CSV export feature | 45 min | The one that best tests the testing instinct. |
+| Review | 20 min | Their diff, their doubts. This is where you take notes. |
 
-Si tu n'as qu'1 h 15 : **le ticket 2 seul + relecture**. C'est celui qui couvre
-le plus.
-Si tu veux couper : le ticket 1 tient en 10 minutes et peut se fondre en
-ouverture du ticket 3.
+If you only have 1 h 15: **ticket 2 alone plus the review**. It covers the
+most. If you need to cut: ticket 1 fits in 10 minutes and can be folded into
+the opening of ticket 3.
 
-## Les trois règles pendant la séance
+## The three rules during the session
 
-**Time-box sans négocier.** Avec Claude Code, l'écart entre un bon candidat et
-un faible ne se voit pas sur « fini / pas fini », il se voit sur la première
-demi-heure. Un candidat qui n'a pas reproduit le bug du ticket 2 en 20 minutes
-t'a déjà tout dit. Coupe et passe à la suite.
+**Time-box without negotiating.** With Claude Code, the gap between a good
+candidate and a weak one does not show up as "finished / not finished", it
+shows up in the first half hour. A candidate who has not reproduced the ticket
+2 bug in 20 minutes has already told you everything. Cut and move on.
 
-**Ne dis jamais combien il y a de problèmes.** Sinon il compte au lieu de lire.
+**Never say how many problems there are.** Otherwise they count instead of
+reading.
 
-**Reste silencieux au début de chaque ticket.** Les deux premières minutes de
-silence t'apprennent plus que n'importe quelle question. S'il bloque, débloque
-d'un cran à la fois — les indices sont dans la grille.
+**Stay silent at the start of each ticket.** The first two minutes of silence
+teach you more than any question. If they get stuck, unblock one notch at a
+time — the hints are in the grid.
 
-Entretien en anglais : c'est la langue de travail, et savoir énoncer un problème
-par écrit avec précision fait partie du poste.
+Interview in English: it is the working language, and stating a problem
+precisely in writing is part of the job.
 
-## Ce qu'on mesure
+## What we measure
 
-Pas la vitesse, pas le nombre de tickets finis. Trois choses :
+Not speed, not the number of tickets finished. Three things:
 
-1. **Ce qu'il fait avant de lancer l'IA** — reproduire, lire la spec, poser une
-   question quand le ticket est flou.
-2. **Ses prompts** — c'est le geste quotidien du poste, observé en conditions
-   réelles plutôt que par procuration.
-3. **Ce qu'il fait du résultat** — est-ce qu'il relit le diff, est-ce qu'il sait
-   dire ce dont il n'est pas sûr.
+1. **What they do before reaching for the AI** — reproduce, read the spec, ask
+   a question when the ticket is vague.
+2. **Their prompts** — the daily gesture of the job, observed in real
+   conditions rather than by proxy.
+3. **What they do with the result** — do they re-read the diff, can they say
+   what they are unsure about.
 
-La grille détaillée, ticket par ticket, avec les causes exactes et les questions
-qui tranchent : [grille-de-correction.md](grille-de-correction.md).
+The detailed grid, ticket by ticket, with the exact causes and the questions
+that settle it: [grading-grid.md](grading-grid.md).
 
-## Remettre la base à zéro entre deux candidats
+## Resetting between two candidates
 
 ```bash
 npm run db:reset
