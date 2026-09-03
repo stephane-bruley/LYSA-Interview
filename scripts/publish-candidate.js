@@ -50,19 +50,12 @@ const PUBLISH = [
 /** Known to stay behind. Anything outside both lists is reported, not guessed. */
 const KEEP_BACK = ['interview', 'scripts', 'node_modules', '.git', '.claude', '.env', 'data'];
 
-/** Where the published tickets live in the snapshot. */
-const TICKETS = 'tickets';
-
 /**
  * Last line of defence, in two layers.
  *
- * ALWAYS applies to every published file: the correction grid must never
- * travel, wherever it is quoted from.
- *
- * APP_ONLY applies to everything except the tickets. The tickets legitimately
- * carry the figure Finance reported and are named after the exercise — that is
- * the point of them. The same strings inside the application would mean the
- * interview material has bled into the code, which is what this catches.
+ * ALWAYS applies to every published file. Now that the tickets ship with the
+ * clone, their filenames and the figure Finance reported are not secrets any
+ * more — the only thing that must never travel is the correction grid.
  */
 const ALWAYS = [
   { pattern: /grille[- ]de[- ]correction/i, what: 'the correction grid' },
@@ -70,10 +63,16 @@ const ALWAYS = [
   { pattern: /interview\/(?!tickets)/i, what: 'a path inside interview/' },
 ];
 
-const APP_ONLY = [
-  { pattern: /\d-(FEATURE|BUGFIX)-/, what: 'a ticket filename' },
-  { pattern: /1[\s,.]?846[\s,.]?800/, what: 'the expected total of ticket 2' },
-];
+/**
+ * CODE_ONLY applies to src/ and test/ only. The application ships with the
+ * bug, so the total Finance expects has no business being in the code or in
+ * the test suite the candidate reads — there, it would hand over the answer.
+ * The README and the tickets quote it legitimately.
+ */
+const CODE_ONLY = {
+  under: ['src', 'test'],
+  patterns: [{ pattern: /1[\s,.]?846[\s,.]?800/, what: 'the expected total of ticket 2' }],
+};
 
 // ------------------------------------------------------------------- args
 
@@ -142,8 +141,9 @@ function scanForLeaks(snapshot) {
     }
 
     const where = relative(snapshot, file);
-    const isTicket = where.split(sep)[0] === TICKETS;
-    const patterns = isTicket ? ALWAYS : [...ALWAYS, ...APP_ONLY];
+    const patterns = CODE_ONLY.under.includes(where.split(sep)[0])
+      ? [...ALWAYS, ...CODE_ONLY.patterns]
+      : ALWAYS;
 
     for (const { pattern, what } of patterns) {
       if (pattern.test(content)) {
