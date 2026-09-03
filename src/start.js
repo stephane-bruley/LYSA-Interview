@@ -15,7 +15,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { startServer } from './server.js';
-import { pool } from './db.js';
+import { pool, waitForDatabase } from './db.js';
 import { isEmpty } from '../db/reset.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -107,6 +107,7 @@ try {
     console.log(`\n  Using DATABASE_URL, leaving Docker alone.`);
   }
 
+  await waitForDatabase();
   await requireSchema();
   server = await startServer();
 

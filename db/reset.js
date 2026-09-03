@@ -7,7 +7,7 @@ import { readFileSync, realpathSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { pool } from '../src/db.js';
+import { pool, waitForDatabase } from '../src/db.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const read = (name) => readFileSync(join(here, name), 'utf8');
@@ -19,6 +19,10 @@ export async function isEmpty() {
 }
 
 export async function reset() {
+  // db:init runs this right after the container comes up, which on a
+  // first-ever start is exactly when PostgreSQL is still restarting itself.
+  await waitForDatabase();
+
   await pool.query(read('schema.sql'));
   console.log('  schema created');
 
