@@ -41,7 +41,7 @@ const PUBLISH = [
 ];
 
 /** Known to stay behind. Anything outside both lists is reported, not guessed. */
-const KEEP_BACK = ['interview', 'scripts', 'node_modules', '.git', '.env', 'data'];
+const KEEP_BACK = ['interview', 'scripts', 'node_modules', '.git', '.claude', '.env', 'data'];
 
 /**
  * Last line of defence. If any of these ever reaches the snapshot, something
