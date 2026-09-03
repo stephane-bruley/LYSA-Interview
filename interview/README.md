@@ -12,13 +12,11 @@ Ce commit unique n'est pas une commodité, c'est une condition de
 fonctionnement : avec un historique réel, `git log -p src/pricing.js` livre la
 réponse de SUP-892 en dix secondes.
 
-À faire une seule fois — créer le repo distant, vide et **privé** :
+Le repo distant est déjà créé, et il est **public** — le candidat travaille sur
+le laptop du recruteur, il n'a donc aucun accès à demander ni à révoquer. Le
+repo public sert au ré-approvisionnement du laptop, pas au candidat.
 
-```bash
-gh repo create stephane-bruley/LYSA-Interview-Candidat --private
-```
-
-Ensuite, à chaque fois que l'application change :
+À chaque fois que l'application change :
 
 ```bash
 npm run publish-candidate -- --dry-run   # ce qui partirait, sans rien pousser
@@ -34,10 +32,17 @@ du repo reste exclu jusqu'à ce qu'on l'inscrive délibérément dans la liste.
 Cible différente : `npm run publish-candidate -- --remote=<url>`, ou la variable
 `CANDIDATE_REPO`.
 
-**Suppose que l'exercice fuite au bout de cinq ou six candidats** — repo privé
-ou pas. C'est pour ça qu'il y a trois scénarios sur trois terrains différents,
-et qu'il en faudra un quatrième d'ici six mois. Révoque l'accès du candidat
-après l'entretien.
+**Suppose que l'exercice est déjà connu.** Le repo étant public, il est
+indexable : un candidat qui cherche le nom de l'entreprise peut tomber sur
+`src/pricing.js` et préparer SUP-892 à l'avance. C'est pour ça qu'il y a trois
+scénarios sur trois terrains différents, et qu'il en faudra un quatrième — plus
+tôt que dans six mois.
+
+Le signal reste largement intact même préparé : le ticket A ne se prépare pas
+(on observe s'il pose la question), et pour B comme pour C ce qu'on regarde est
+la méthode et les prompts, pas la trouvaille. Mais si un candidat arrive en
+sachant exactement où est le bug sans jamais avoir lancé l'application, tu le
+verras — demande-lui de reproduire devant toi.
 
 ## Préparer le laptop, la veille
 
@@ -53,7 +58,7 @@ npm install
 npm run db:up
 npm run db:reset
 npm test          # 12 tests, tous verts
-npm start         # http://localhost:3000
+npm start         # http://localhost:4000
 ```
 
 Retire le remote, pour qu'il ne puisse ni pousser chez toi ni remonter à

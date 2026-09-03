@@ -15,7 +15,7 @@ You need Node 22 or later and Docker.
 npm install
 npm run db:up      # starts PostgreSQL in a container, on port 5433
 npm run db:reset   # creates the schema and loads the demo data
-npm start          # http://localhost:3000
+npm start          # http://localhost:4000
 ```
 
 ```bash

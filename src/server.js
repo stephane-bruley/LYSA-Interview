@@ -1,7 +1,9 @@
 import { createApp } from './app.js';
 import { pool } from './db.js';
 
-const PORT = Number(process.env.PORT || 3000);
+// 4000 rather than 3000: another application already holds 3000 on the
+// machine this runs on. Override with PORT if you need something else.
+const PORT = Number(process.env.PORT || 4000);
 
 try {
   await pool.query('select 1');
