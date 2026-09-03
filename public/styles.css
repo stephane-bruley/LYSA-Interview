@@ -1,0 +1,132 @@
+:root {
+  --bg: #f6f7f9;
+  --panel: #ffffff;
+  --line: #dfe3e8;
+  --text: #1c2430;
+  --muted: #6b7684;
+  --accent: #2563eb;
+  --danger: #c0374a;
+  --ok: #157347;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 14px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 14px 24px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+h1 { font-size: 17px; margin: 0; letter-spacing: -0.01em; }
+h2 { font-size: 15px; margin: 0 0 16px; }
+
+nav { display: flex; gap: 6px; }
+.tab {
+  border: none;
+  background: none;
+  padding: 7px 14px;
+  border-radius: 7px;
+  color: var(--muted);
+  font: inherit;
+  cursor: pointer;
+}
+.tab:hover { background: var(--bg); }
+.tab.active { background: var(--accent); color: #fff; }
+
+main { padding: 22px 24px 60px; }
+
+.toolbar { display: flex; gap: 10px; align-items: center; margin-bottom: 16px; }
+.toolbar input[type="search"] { width: 280px; }
+.check { display: flex; align-items: center; gap: 6px; color: var(--muted); }
+.check input { width: auto; }
+
+input, select {
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  padding: 8px 10px;
+  font: inherit;
+  background: var(--panel);
+  color: var(--text);
+  width: 100%;
+}
+input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+button {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  border-radius: 7px;
+  padding: 8px 14px;
+  font: inherit;
+  cursor: pointer;
+}
+button:hover { border-color: var(--accent); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.danger { color: var(--danger); border-color: #eecdd2; }
+button.danger:hover { background: var(--danger); color: #fff; border-color: var(--danger); }
+
+.split { display: grid; grid-template-columns: 1fr; gap: 18px; align-items: start; }
+.split:has(.panel:not([hidden])) { grid-template-columns: 1fr 340px; }
+@media (max-width: 900px) { .split:has(.panel:not([hidden])) { grid-template-columns: 1fr; } }
+
+.grid {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.grid th, .grid td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+.grid th { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; }
+.grid tbody tr:last-child td { border-bottom: none; }
+.grid tbody tr { cursor: pointer; }
+.grid tbody tr:hover { background: #f2f6ff; }
+.grid tbody tr.selected { background: #e7efff; }
+.grid .num { text-align: right; font-variant-numeric: tabular-nums; }
+.grid .archived td { color: var(--muted); font-style: italic; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 18px;
+}
+.panel label { display: block; margin-bottom: 12px; color: var(--muted); font-size: 13px; }
+.panel label input { margin-top: 4px; }
+.panel label.check { display: flex; align-items: center; }
+.actions { display: flex; gap: 8px; margin-top: 18px; flex-wrap: wrap; }
+
+.error { color: var(--danger); margin: 12px 0 0; }
+.muted { color: var(--muted); }
+
+.status {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+}
+.status.paid { color: var(--ok); border-color: #bfe0cd; background: #eef8f2; }
+.status.open { color: var(--accent); border-color: #c7d8fb; background: #eef3ff; }
+.status.cancelled { color: var(--danger); border-color: #eecdd2; background: #fdeff1; }
+
+.lines { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+.lines th, .lines td { padding: 7px 0; border-bottom: 1px solid var(--line); text-align: left; }
+.lines th { font-size: 12px; color: var(--muted); font-weight: 600; }
+.lines .num { text-align: right; font-variant-numeric: tabular-nums; }
+
+.totals { width: 100%; border-collapse: collapse; }
+.totals td { padding: 5px 0; }
+.totals td:last-child { text-align: right; font-variant-numeric: tabular-nums; }
+.totals tr.grand td { border-top: 2px solid var(--line); padding-top: 10px; font-weight: 700; font-size: 15px; }
+.totals tr.discount td { color: var(--ok); }

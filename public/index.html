@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LYSA Orders</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>LYSA Orders</h1>
+      <nav>
+        <button class="tab active" data-view="customers">Customers</button>
+        <button class="tab" data-view="orders">Orders</button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ------------------------------------------------------ customers -->
+      <section id="view-customers" class="view">
+        <div class="toolbar">
+          <input id="search" type="search" placeholder="Search name or email…" />
+          <label class="check">
+            <input id="show-archived" type="checkbox" />
+            Show archived
+          </label>
+          <button id="new-customer" class="primary">New customer</button>
+        </div>
+
+        <div class="split">
+          <table class="grid">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th class="num">Contract</th>
+                <th class="num">Orders</th>
+                <th>Last order</th>
+              </tr>
+            </thead>
+            <tbody id="customer-rows"></tbody>
+          </table>
+
+          <aside id="customer-form" class="panel" hidden>
+            <h2 id="customer-form-title">New customer</h2>
+            <form id="customer-fields">
+              <label>
+                Name
+                <input name="name" type="text" required />
+              </label>
+              <label>
+                Email
+                <input name="email" type="email" required />
+              </label>
+              <label>
+                Contract discount (%)
+                <input name="contractDiscountRate" type="number" min="0" max="20" step="0.5" />
+              </label>
+              <label class="check">
+                <input name="archived" type="checkbox" />
+                Archived
+              </label>
+
+              <div class="actions">
+                <button type="submit" class="primary">Save</button>
+                <button type="button" id="delete-customer" class="danger">Delete</button>
+                <button type="button" id="close-form">Cancel</button>
+              </div>
+              <p id="customer-error" class="error" hidden></p>
+            </form>
+          </aside>
+        </div>
+      </section>
+
+      <!-- --------------------------------------------------------- orders -->
+      <section id="view-orders" class="view" hidden>
+        <div class="split">
+          <table class="grid">
+            <thead>
+              <tr>
+                <th>Reference</th>
+                <th>Customer</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th class="num">Total</th>
+              </tr>
+            </thead>
+            <tbody id="order-rows"></tbody>
+          </table>
+
+          <aside id="order-detail" class="panel" hidden></aside>
+        </div>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>

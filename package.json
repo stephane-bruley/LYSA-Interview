@@ -1,0 +1,23 @@
+{
+  "name": "lysa-orders",
+  "version": "1.0.0",
+  "description": "B2B orders back-office — customers, orders and pricing",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "dev": "node --env-file-if-exists=.env --watch src/server.js",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:reset": "node --env-file-if-exists=.env db/reset.js",
+    "test": "node --env-file-if-exists=.env --test",
+    "publish-candidate": "node scripts/publish-candidate.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "pg": "^8.13.1"
+  }
+}
